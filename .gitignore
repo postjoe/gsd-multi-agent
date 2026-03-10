@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+ENV/
+env/
+.venv
+
+# Testing
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific
+*.log
+*.db
+*.sqlite
+*.sqlite3
+gsd_verification_report.json
+validation_report*.json
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# Package builds
+*.tar.gz
+*.zip
+
+# Local configuration (should not be in package)
+.env
+.env.local
+config.local.yaml
+
+# Obsidian (if used in projects)
+.obsidian/
+

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest tests/ -v --tb=short)",
+      "Bash(uv run ruff check .)",
+      "Bash(python gsd_setup/verify.py)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

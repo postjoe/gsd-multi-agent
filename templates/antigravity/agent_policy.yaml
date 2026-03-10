@@ -1,0 +1,252 @@
+# GSD Multi-Agent Policy Configuration
+# Defines agent roles, capabilities, and cost optimization strategy
+
+version: "1.0"
+project: "{PROJECT_NAME}"  # Replace with your project name
+
+# Agent Tier Definitions (ordered by cost, cheapest first)
+agent_tiers:
+  free:
+    - name: "OpenCode (MiniMax M2.5)"
+      id: "opencode"
+      cost_per_1k_tokens: 0.00  # FREE!
+      capabilities:
+        - documentation
+        - simple_refactoring
+        - code_formatting
+        - test_generation
+        - api_docs
+      max_complexity: simple
+      parallel_capable: true
+
+  fast:
+    - name: "Claude Haiku"
+      id: "haiku"
+      cost_per_1k_tokens: 0.001
+      capabilities:
+        - file_operations
+        - simple_validation
+        - quick_iterations
+        - basic_debugging
+        - test_execution
+      max_complexity: moderate
+      parallel_capable: true
+
+  implementation:
+    - name: "Codex (OpenAI)"
+      id: "codex"
+      cost_per_1k_tokens: 0.002
+      capabilities:
+        - feature_implementation
+        - test_writing
+        - refactoring
+        - api_integration
+        - data_processing
+      max_complexity: complex
+      parallel_capable: true
+
+    - name: "Gemini"
+      id: "gemini"
+      cost_per_1k_tokens: 0.0025
+      capabilities:
+        - adversarial_testing
+        - edge_case_discovery
+        - assumption_breaking
+        - qa_validation
+        - security_analysis
+      max_complexity: complex
+      parallel_capable: true
+
+  standard:
+    - name: "Claude Sonnet"
+      id: "sonnet"
+      cost_per_1k_tokens: 0.003
+      capabilities:
+        - cross_agent_orchestration
+        - spec_review
+        - risk_analysis
+        - code_review
+        - architecture_planning
+      max_complexity: very_complex
+      parallel_capable: true
+      default_coordinator: true
+
+  premium:
+    - name: "Claude Opus"
+      id: "opus"
+      cost_per_1k_tokens: 0.015
+      capabilities:
+        - hardest_debugging
+        - novel_algorithms
+        - critical_security
+        - architecture_design
+        - impossible_problems
+      max_complexity: extreme
+      parallel_capable: true
+
+# Task Assignment Rules
+task_assignment:
+  # Always try free tier first
+  documentation:
+    preferred: ["opencode", "haiku"]
+    fallback: ["sonnet"]
+
+  simple_tasks:
+    preferred: ["opencode", "haiku"]
+    fallback: ["codex", "sonnet"]
+
+  implementation:
+    preferred: ["codex", "opencode"]
+    fallback: ["sonnet", "opus"]
+
+  testing:
+    preferred: ["gemini", "codex", "opencode"]
+    fallback: ["sonnet"]
+
+  architecture:
+    preferred: ["sonnet", "opus"]
+    fallback: []  # No fallback for critical work
+
+  critical_security:
+    preferred: ["opus"]
+    fallback: []  # No fallback for security
+
+  coordination:
+    preferred: ["sonnet"]
+    fallback: ["opus"]
+
+# Complexity Thresholds
+complexity_mapping:
+  simple:
+    max_lines: 100
+    max_files: 2
+    examples:
+      - "Write documentation"
+      - "Format code"
+      - "Add comments"
+      - "Simple refactor"
+
+  moderate:
+    max_lines: 300
+    max_files: 5
+    examples:
+      - "Implement basic feature"
+      - "Write unit tests"
+      - "Fix simple bugs"
+      - "Update configs"
+
+  complex:
+    max_lines: 500
+    max_files: 10
+    examples:
+      - "Build new module"
+      - "Integration tests"
+      - "Complex refactor"
+      - "API implementation"
+
+  very_complex:
+    max_lines: 1000
+    max_files: 20
+    examples:
+      - "System design"
+      - "Cross-module integration"
+      - "Performance optimization"
+      - "Migration planning"
+
+  extreme:
+    max_lines: null  # No limit
+    max_files: null  # No limit
+    examples:
+      - "Architecture overhaul"
+      - "Critical bug investigation"
+      - "Security vulnerability fix"
+      - "Novel algorithm design"
+
+# Parallel Execution Strategy
+parallel_execution:
+  enabled: true
+  max_parallel_agents: 5
+
+  # Define which tasks can run in parallel
+  parallel_groups:
+    independent:
+      - documentation
+      - test_writing
+      - linting
+      - formatting
+
+    sequential_required:
+      - database_migrations
+      - breaking_changes
+      - deployment
+      - security_patches
+
+  # Wave-based execution for complex features
+  wave_strategy:
+    wave_1:  # Foundation
+      - architecture_design
+      - api_specification
+      - database_schema
+
+    wave_2:  # Implementation
+      - backend_implementation
+      - frontend_implementation
+      - integration_layer
+
+    wave_3:  # Quality
+      - testing
+      - documentation
+      - performance_optimization
+
+# Cost Optimization Rules
+cost_optimization:
+  # Maximum cost per task (USD)
+  max_cost_per_task: 0.10
+
+  # Warn if total session exceeds
+  session_cost_warning: 1.00
+
+  # Hard limit for session
+  session_cost_limit: 5.00
+
+  # Automatic optimization strategies
+  strategies:
+    - prefer_free_models  # Always try OpenCode first
+    - batch_simple_tasks  # Group simple tasks for Haiku
+    - defer_premium_usage # Only use Opus when necessary
+    - parallel_cheap_agents # Run multiple cheap agents vs one expensive
+
+# Quality Gates
+quality_gates:
+  pre_execution:
+    - verify_task_clarity
+    - estimate_complexity
+    - check_cost_budget
+
+  post_execution:
+    - validate_output
+    - run_tests
+    - check_lint
+    - verify_types
+
+# Reporting Configuration
+reporting:
+  track_metrics:
+    - tokens_used
+    - cost_per_agent
+    - task_completion_time
+    - parallel_efficiency
+
+  generate_reports:
+    - workflow_summary
+    - cost_breakdown
+    - agent_utilization
+    - optimization_opportunities
+
+# Project-Specific Overrides
+project_overrides:
+  # Add project-specific rules here
+  # Example:
+  # database_work:
+  #   required_agent: "opus"  # Critical for this project
+  #   reason: "Complex schema requires careful design"
